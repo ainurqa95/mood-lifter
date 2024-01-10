@@ -5,10 +5,10 @@ import (
 )
 
 type User struct {
+	Id        int
 	UUID      string
 	Info      UserInfo
 	CreatedAt time.Time
-	UpdatedAt *time.Time
 }
 
 type UserInfo struct {

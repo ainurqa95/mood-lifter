@@ -7,9 +7,10 @@ const (
 )
 
 type Config struct {
-	BotType  BotType
-	TgCfg    TgConfig
-	DbConfig DbConfig
+	BotType             BotType
+	TgCfg               TgConfig
+	DbConfig            DbConfig
+	ScheduleEveryMinute int
 }
 
 func NewConfig() (*Config, error) {

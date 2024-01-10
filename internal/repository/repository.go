@@ -7,8 +7,11 @@ import (
 
 type UserRepository interface {
 	Create(ctx context.Context, userUUID string, info *model.UserInfo) error
-	Get(ctx context.Context, uuid string) (*model.User, error)
-	GetByChatId(ctx context.Context, botId int) (*model.User, error)
+	GetByLimitOffset(ctx context.Context, limit int, offset int) ([]model.UserInfo, error)
+}
+
+type MessageRepository interface {
+	Create(ctx context.Context, message model.Message) error
 }
 
 type ComplimentRepository interface {

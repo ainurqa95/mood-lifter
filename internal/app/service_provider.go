@@ -4,9 +4,12 @@ import (
 	"github.com/ainurqa95/mood-lifter/internal/config"
 	"github.com/ainurqa95/mood-lifter/internal/repository"
 	complimentRepository "github.com/ainurqa95/mood-lifter/internal/repository/compliment"
+	msgRepository "github.com/ainurqa95/mood-lifter/internal/repository/message"
 	userRepository "github.com/ainurqa95/mood-lifter/internal/repository/user"
+
 	"github.com/ainurqa95/mood-lifter/internal/service"
 	complimentService "github.com/ainurqa95/mood-lifter/internal/service/compliment"
+	messageService "github.com/ainurqa95/mood-lifter/internal/service/message"
 	userService "github.com/ainurqa95/mood-lifter/internal/service/user"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -17,8 +20,10 @@ type serviceProvider struct {
 	pool                 *pgxpool.Pool
 	userRepository       repository.UserRepository
 	complimentRepository repository.ComplimentRepository
+	messageRepository    repository.MessageRepository
 
 	userService       service.UserService
+	messageService    service.MessageService
 	complimentService service.ComplimentService
 }
 
@@ -60,4 +65,22 @@ func (s *serviceProvider) ComplimentRepository() repository.ComplimentRepository
 	}
 
 	return s.complimentRepository
+}
+
+func (s *serviceProvider) MessageService() service.MessageService {
+	if s.messageService == nil {
+		s.messageService = messageService.NewMessageService(
+			s.MessageRepository(),
+		)
+	}
+
+	return s.messageService
+}
+
+func (s *serviceProvider) MessageRepository() repository.MessageRepository {
+	if s.messageRepository == nil {
+		s.messageRepository = msgRepository.NewDbMessageRepository(s.pool)
+	}
+
+	return s.messageRepository
 }

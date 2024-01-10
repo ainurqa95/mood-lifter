@@ -1,15 +1,16 @@
 package model
 
 import (
-	"database/sql"
 	"time"
 )
 
 type User struct {
-	UUID      string `db:uid`
-	Info      UserInfo
-	CreatedAt time.Time
-	UpdatedAt sql.NullTime
+	Id        int       `db:"id"`
+	UUID      string    `db:"uid"`
+	Name      string    `db:"name"`
+	UserName  string    `db:"username"`
+	ChatID    int64     `db:"chat_id"`
+	CreatedAt time.Time `db:"created_at"`
 }
 
 type UserInfo struct {

@@ -7,10 +7,14 @@ import (
 
 type UserService interface {
 	CreateIfNotExists(ctx context.Context, info *model.UserInfo) (string, error)
-	Get(ctx context.Context, uuid string) (*model.User, error)
+	GetUsersByOffset(ctx context.Context, limit int, offset int) ([]model.UserInfo, error)
 }
 
 type ComplimentService interface {
 	MassCreate(ctx context.Context) error
 	GetRandom(ctx context.Context) (*model.Compliment, error)
+}
+
+type MessageService interface {
+	Create(ctx context.Context, chatId int64, text string) error
 }

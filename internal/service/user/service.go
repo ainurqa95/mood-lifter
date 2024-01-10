@@ -23,20 +23,6 @@ func NewService(
 	}
 }
 
-func (s *service) Get(ctx context.Context, uuid string) (*model.User, error) {
-	user, err := s.userRepository.Get(ctx, uuid)
-	if err != nil {
-		log.Printf("ошибка получения пользователя: %v\n", err)
-		return nil, err
-	}
-	if user == nil {
-		log.Printf("пользователь с uuid %s не найден\n", uuid)
-		return nil, model.ErrorUserNotFound
-	}
-
-	return user, nil
-}
-
 func (s *service) CreateIfNotExists(ctx context.Context, info *model.UserInfo) (string, error) {
 	userUUID, err := uuid.NewUUID()
 	if err != nil {
@@ -51,4 +37,14 @@ func (s *service) CreateIfNotExists(ctx context.Context, info *model.UserInfo) (
 	}
 
 	return userUUID.String(), nil
+}
+
+func (s *service) GetUsersByOffset(ctx context.Context, limit int, offset int) ([]model.UserInfo, error) {
+	users, err := s.userRepository.GetByLimitOffset(ctx, limit, offset)
+	if err != nil {
+		log.Printf("ошибка создания пользователя: %v\n", err)
+		return nil, err
+	}
+
+	return users, nil
 }

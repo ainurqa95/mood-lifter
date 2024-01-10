@@ -3,28 +3,22 @@ package converter
 import (
 	"github.com/ainurqa95/mood-lifter/internal/model"
 	repoModel "github.com/ainurqa95/mood-lifter/internal/repository/user/model"
-	"time"
 )
 
-func ToUserFromRepo(user *repoModel.User) *model.User {
-	var updatedAt *time.Time
-	if user.UpdatedAt.Valid {
-		updatedAt = &user.UpdatedAt.Time
-	}
-
+func ToUserFromRepo(user repoModel.User) *model.User {
 	return &model.User{
+		Id:        user.Id,
 		UUID:      user.UUID,
-		Info:      ToUserInfoFromRepo(user.Info),
+		Info:      ToUserInfoFromRepo(user),
 		CreatedAt: user.CreatedAt,
-		UpdatedAt: updatedAt,
 	}
 }
 
-func ToUserInfoFromRepo(info repoModel.UserInfo) model.UserInfo {
+func ToUserInfoFromRepo(user repoModel.User) model.UserInfo {
 	return model.UserInfo{
-		Name:     info.Name,
-		ChatID:   info.ChatID,
-		UserName: info.UserName,
+		Name:     user.Name,
+		ChatID:   user.ChatID,
+		UserName: user.UserName,
 	}
 }
 
