@@ -1,9 +1,9 @@
 package config
 
 type TgConfig struct {
-	token string
+	Token string `env:"BOT_TOKEN" envDefault:""`
 }
 
 func (t *TgConfig) GetToken() string {
-	return t.token
+	return t.Token
 }

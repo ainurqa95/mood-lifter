@@ -1,5 +1,9 @@
 package config
 
+import (
+	"github.com/caarlos0/env/v8"
+)
+
 type BotType int
 
 const (
@@ -7,29 +11,16 @@ const (
 )
 
 type Config struct {
-	BotType             BotType
-	TgCfg               TgConfig
-	DbConfig            DbConfig
-	ScheduleEveryMinute int
+	BotType      BotType `env:"BOT_TYPE" envDefault:"0"`
+	TgCfg        TgConfig
+	DbConfig     DbConfig
+	CronSchedule string `env:"SCHEDULE" envDefault:"0 10-22/2 * * *"`
 }
 
 func NewConfig() (*Config, error) {
-	// TODO from env
-	tgCfg := TgConfig{
-		token: "6781544832:AAEHpWffFUg8Jp2dAlboJnzoFStmIvIQrk8",
+	cfg := Config{}
+	if err := env.Parse(&cfg); err != nil {
+		return nil, err
 	}
-	botType := TgBot
-	baseDb := DbConfig{
-		host:     "localhost",
-		port:     "5432",
-		username: "default",
-		password: "secret",
-		dbname:   "mood_lifter",
-	}
-
-	return &Config{
-		TgCfg:    tgCfg,
-		BotType:  botType,
-		DbConfig: baseDb,
-	}, nil
+	return &cfg, nil
 }
