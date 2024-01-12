@@ -14,7 +14,7 @@ type Config struct {
 	BotType      BotType `env:"BOT_TYPE" envDefault:"0"`
 	TgCfg        TgConfig
 	DbConfig     DbConfig
-	CronSchedule string `env:"SCHEDULE" envDefault:"0 10-22/2 * * *"`
+	CronSchedule string `env:"SCHEDULE" envDefault:"0 8-18/2 * * *"`
 }
 
 func NewConfig() (*Config, error) {
