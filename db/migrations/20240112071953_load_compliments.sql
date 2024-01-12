@@ -6,8 +6,8 @@ INSERT INTO compliments (text) VALUES ('%s, ты самый лучший чел�
 INSERT INTO compliments (text) VALUES ('%s, ты прекрасный человечек');
 INSERT INTO compliments (text) VALUES ('%s, у тебя все получится!');
 INSERT INTO compliments (text) VALUES ('%s, улыбнись!');
-INSERT INTO compliments (text) VALUES ('%s, твоя улыбка светит, как солнце"');
-INSERT INTO compliments (text) VALUES ('%s, этому миру нужны такие люди, как ты"');
+INSERT INTO compliments (text) VALUES ('%s, твоя улыбка светит, как солнце');
+INSERT INTO compliments (text) VALUES ('%s, этому миру нужны такие люди, как ты');
 INSERT INTO compliments (text) VALUES ('%s, ты неповторимый и совершенный человечек');
 INSERT INTO compliments (text) VALUES ('%s, ты вызываешь восхищение');
 INSERT INTO compliments (text) VALUES ('%s, твоя добрая энергия притягивает всех вокруг');
@@ -40,7 +40,7 @@ INSERT INTO compliments (text) VALUES ('%s, ты наполняешь мир к�
 INSERT INTO compliments (text) VALUES ('%s, тебя ждет сегодня успех');
 INSERT INTO compliments (text) VALUES ('%s, все будет хорошо!');
 INSERT INTO compliments (text) VALUES ('%s, интересного, насыщенного, яркого дня! Приветливых улыбок и хорошего настроения! ');
-INSERT INTO compliments (text) VALUES ('%%, улыбнись, ты оч красивый человек"');
+INSERT INTO compliments (text) VALUES ('%%, улыбнись, ты оч красивый человек');
 -- +goose Down
 -- +goose StatementBegin
 SELECT 'down SQL query';
