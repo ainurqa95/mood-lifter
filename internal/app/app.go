@@ -33,13 +33,6 @@ func (a *App) Run(ctx context.Context) error {
 	go func() {
 		a.bot.Start(ctx)
 	}()
-	go func() {
-		complimentService := a.serviceProvider.ComplimentService()
-		err := complimentService.MassCreate(ctx)
-		if err != nil {
-			log.Println(err)
-		}
-	}()
 
 	go func() {
 		err := a.scheduler.StartScheduler(ctx)

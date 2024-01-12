@@ -14,7 +14,7 @@ func main() {
 	mainCtx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM, syscall.SIGINT, syscall.SIGQUIT)
 	myApp, err := app.NewApp(mainCtx)
 	if err != nil {
-		log.Fatal(err) // TODO use another logging
+		log.Fatal(err)
 	}
 	err = myApp.Run(mainCtx)
 	if err != nil {

@@ -11,7 +11,6 @@ type UserService interface {
 }
 
 type ComplimentService interface {
-	MassCreate(ctx context.Context) error
 	GetRandom(ctx context.Context) (*model.Compliment, error)
 }
 

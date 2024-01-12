@@ -30,21 +30,6 @@ func NewComplimentService(
 	}
 }
 
-func (s *complimentService) MassCreate(ctx context.Context) error {
-	compliment, err := s.GetRandom(ctx)
-	if compliment != nil {
-		return nil
-	}
-
-	// TODO load compliments from source
-	err = s.complimentRepository.MassCreate(ctx, compliments)
-	if err != nil {
-		log.Printf("ошибка создания комплиментов: %v\n", err)
-		return fmt.Errorf("ошибка создания комплиментов: %v\n", err)
-	}
-	return nil
-}
-
 func (s *complimentService) GetRandom(ctx context.Context) (*model.Compliment, error) {
 	compliment, err := s.complimentRepository.GetRandom(ctx)
 	if err != nil {

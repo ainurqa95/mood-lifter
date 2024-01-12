@@ -15,6 +15,5 @@ type MessageRepository interface {
 }
 
 type ComplimentRepository interface {
-	MassCreate(ctx context.Context, compliments []string) error
 	GetRandom(ctx context.Context) (*model.Compliment, error)
 }
