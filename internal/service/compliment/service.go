@@ -11,13 +11,6 @@ import (
 
 var _ def.ComplimentService = (*complimentService)(nil)
 
-var compliments = []string{
-	"%s ты самый лучший человек на планете!",
-	"%s ты прекрасный человечек!",
-	"%s у тебя все получится!",
-	"%s улыбнись!",
-}
-
 type complimentService struct {
 	complimentRepository repository.ComplimentRepository
 }
