@@ -13,8 +13,13 @@ const (
 	startCommand = "start"
 )
 
+type BotClient interface {
+	Send(c tgbotapi.Chattable) (tgbotapi.Message, error)
+	GetUpdatesChan(config tgbotapi.UpdateConfig) tgbotapi.UpdatesChannel
+}
+
 type Bot struct {
-	client            *tgbotapi.BotAPI
+	client            BotClient
 	cfg               config.Config
 	userService       service.UserService
 	complimentService service.ComplimentService
@@ -22,18 +27,13 @@ type Bot struct {
 }
 
 func NewBot(
-	cfg config.Config,
+	client BotClient,
 	userService service.UserService,
 	complimentService service.ComplimentService,
 	messageService service.MessageService,
 ) (*Bot, error) {
-	client, err := tgbotapi.NewBotAPI(cfg.TgCfg.GetToken())
-	if err != nil {
-		return nil, err
-	}
 	return &Bot{
 		client:            client,
-		cfg:               cfg,
 		userService:       userService,
 		messageService:    messageService,
 		complimentService: complimentService,
