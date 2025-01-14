@@ -6,11 +6,14 @@ import (
 	"github.com/ainurqa95/mood-lifter/internal/config"
 	"github.com/ainurqa95/mood-lifter/internal/model"
 	"github.com/ainurqa95/mood-lifter/internal/service"
+	"github.com/ainurqa95/mood-lifter/internal/service/compliment"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"strings"
 )
 
 const (
-	startCommand = "start"
+	startCommand       = "start"
+	getAllUsersCommand = "getAllUsers"
 )
 
 type BotClient interface {
@@ -83,6 +86,8 @@ func (b *Bot) handleCommand(ctx context.Context, message *tgbotapi.Message) erro
 	switch message.Command() {
 	case startCommand:
 		return b.handleStartCommand(ctx, message)
+	case getAllUsersCommand:
+		return b.handleAllUsersCommand(ctx, message)
 	default:
 		return b.handleUnknownCommand(ctx, message)
 	}
@@ -102,6 +107,23 @@ func (b *Bot) handleStartCommand(ctx context.Context, message *tgbotapi.Message)
 	return b.SendCompliment(ctx, message.Chat.FirstName, message.Chat.ID)
 }
 
+func (b *Bot) handleAllUsersCommand(ctx context.Context, message *tgbotapi.Message) error {
+	users, err := b.userService.GetUsersByOffset(ctx, compliment.DEFAULT_LIMIT, 0)
+	if err != nil {
+		return err
+	}
+	usersStr := make([]string, len(users))
+	for i, user := range users {
+		usersStr[i] = "@" + user.UserName
+	}
+	msgText := strings.Join(usersStr, ",")
+	startMessage := tgbotapi.NewMessage(message.Chat.ID, msgText)
+
+	_, err = b.client.Send(startMessage)
+
+	return err
+}
+
 func (b *Bot) handleMessage(ctx context.Context, message *tgbotapi.Message) error {
 	err := b.createUser(ctx, message)
 	if err != nil {
@@ -112,15 +134,15 @@ func (b *Bot) handleMessage(ctx context.Context, message *tgbotapi.Message) erro
 }
 
 func (b *Bot) SendCompliment(ctx context.Context, name string, chatId int64) error {
-	compliment, err := b.complimentService.GetRandom(ctx)
+	randomCompliment, err := b.complimentService.GetRandom(ctx)
 	if err != nil {
 		return err
 	}
-	text := fmt.Sprintf(compliment.Text, name)
+	text := fmt.Sprintf(randomCompliment.Text, name)
 	complimentMessage := tgbotapi.NewMessage(chatId, text)
 	_, err = b.client.Send(complimentMessage)
 	if err != nil {
-		return err
+		return fmt.Errorf("ошибки при отправке комплимента %s %v", name, err)
 	}
 
 	return b.messageService.Create(ctx, chatId, text)

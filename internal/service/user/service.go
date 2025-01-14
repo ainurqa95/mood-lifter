@@ -42,7 +42,7 @@ func (s *service) CreateIfNotExists(ctx context.Context, info *model.UserInfo) (
 func (s *service) GetUsersByOffset(ctx context.Context, limit int, offset int) ([]model.UserInfo, error) {
 	users, err := s.userRepository.GetByLimitOffset(ctx, limit, offset)
 	if err != nil {
-		log.Printf("ошибка создания пользователя: %v\n", err)
+		log.Printf("ошибка получения пользователей: %v\n", err)
 		return nil, err
 	}
 

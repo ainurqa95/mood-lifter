@@ -5,6 +5,7 @@ import (
 	"github.com/ainurqa95/mood-lifter/internal/config"
 	"github.com/ainurqa95/mood-lifter/internal/service/compliment"
 	"github.com/go-co-op/gocron/v2"
+	"log"
 )
 
 type ComplimentScheduler struct {
@@ -34,7 +35,10 @@ func (c *ComplimentScheduler) StartScheduler(ctx context.Context) error {
 		),
 		gocron.NewTask(
 			func(ctx context.Context) {
-				c.massSender.SendMassCompliments(ctx)
+				err := c.massSender.SendMassCompliments(ctx)
+				if err != nil {
+					log.Printf("error sending mass compliments: %v", err)
+				}
 			}, ctx,
 		),
 	)

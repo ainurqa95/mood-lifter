@@ -31,7 +31,7 @@ func (r *DbUserRepository) Create(ctx context.Context, userUUID string, info *mo
 }
 
 func (r *DbUserRepository) GetByLimitOffset(ctx context.Context, limit int, offset int) ([]model.UserInfo, error) {
-	query := "SELECT id, uid, created_at, chat_id, name, username  FROM users ORDER BY id ASC LIMIT $1 OFFSET $2"
+	query := "SELECT id, uid, created_at, chat_id, name, username  FROM users ORDER BY id LIMIT $1 OFFSET $2"
 
 	rows, err := r.pool.Query(ctx, query, limit, offset)
 	if err != nil {
