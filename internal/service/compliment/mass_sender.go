@@ -53,7 +53,7 @@ func (m *MassSender) SendMassCompliments(ctx context.Context) error {
 			for user := range toSendUsers {
 				err := m.bot.SendCompliment(gCtx, user.Name, user.ChatID)
 				if err != nil {
-					return err
+					log.Println("error sending compliment:", err)
 				}
 			}
 			return nil

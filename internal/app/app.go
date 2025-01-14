@@ -37,7 +37,7 @@ func (a *App) Run(ctx context.Context) error {
 	go func() {
 		err := a.scheduler.StartScheduler(ctx)
 		if err != nil {
-			log.Println()
+			log.Println(err)
 		}
 	}()
 
