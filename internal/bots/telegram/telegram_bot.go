@@ -6,7 +6,6 @@ import (
 	"github.com/ainurqa95/mood-lifter/internal/config"
 	"github.com/ainurqa95/mood-lifter/internal/model"
 	"github.com/ainurqa95/mood-lifter/internal/service"
-	"github.com/ainurqa95/mood-lifter/internal/service/compliment"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"strings"
 )
@@ -107,8 +106,9 @@ func (b *Bot) handleStartCommand(ctx context.Context, message *tgbotapi.Message)
 	return b.SendCompliment(ctx, message.Chat.FirstName, message.Chat.ID)
 }
 
+// TODO временный метод выпилить
 func (b *Bot) handleAllUsersCommand(ctx context.Context, message *tgbotapi.Message) error {
-	users, err := b.userService.GetUsersByOffset(ctx, compliment.DEFAULT_LIMIT, 0)
+	users, err := b.userService.GetUsersByOffset(ctx, 1000, 0)
 	if err != nil {
 		return err
 	}
