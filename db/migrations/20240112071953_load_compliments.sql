@@ -40,8 +40,8 @@ INSERT INTO compliments (text) VALUES ('%s, ты наполняешь мир к�
 INSERT INTO compliments (text) VALUES ('%s, тебя ждет сегодня успех');
 INSERT INTO compliments (text) VALUES ('%s, все будет хорошо!');
 INSERT INTO compliments (text) VALUES ('%s, интересного, насыщенного, яркого дня! Приветливых улыбок и хорошего настроения! ');
-INSERT INTO compliments (text) VALUES ('%%, улыбнись, ты оч красивый человек');
-INSERT INTO compliments (text) VALUES ('%s, делай легче, делай играуючи, КАЙФУЙ');
+INSERT INTO compliments (text) VALUES ('%s, улыбнись, ты оч красивый человек');
+INSERT INTO compliments (text) VALUES ('%s, делай легче, делай играючи, КАЙФУЙ');
 INSERT INTO compliments (text) VALUES ('%s, у тебя золотое сердце');
 INSERT INTO compliments (text) VALUES ('%s, твоя доброта не знает границ');
 INSERT INTO Compliments (text) VALUES ('%s, твоя положительная энергия заразительна');
