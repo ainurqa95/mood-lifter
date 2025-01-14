@@ -28,7 +28,8 @@ func NewComplimentScheduler(cfg config.Config, massSender compliment.MassSender)
 }
 
 func (c *ComplimentScheduler) StartScheduler(ctx context.Context) error {
-	_, err := c.scheduler.NewJob(
+	err := c.massSender.SendMassCompliments(ctx)
+	_, err = c.scheduler.NewJob(
 		gocron.CronJob(
 			c.cfg.CronSchedule,
 			false,

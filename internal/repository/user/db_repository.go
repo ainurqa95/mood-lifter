@@ -41,6 +41,10 @@ func (r *DbUserRepository) GetByLimitOffset(ctx context.Context, limit int, offs
 	if errors.Is(err, pgx.ErrNoRows) {
 		return []model.UserInfo{}, nil
 	}
+	if err != nil {
+		return nil, err
+	}
+
 	if len(users) == 0 {
 		return []model.UserInfo{}, nil
 	}

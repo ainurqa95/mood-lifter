@@ -15,17 +15,17 @@ func ToUserFromRepo(user repoModel.User) *model.User {
 }
 
 func ToUserInfoFromRepo(user repoModel.User) model.UserInfo {
-	return model.UserInfo{
-		Name:     user.Name,
-		ChatID:   user.ChatID,
-		UserName: user.UserName,
+	userName := ""
+	if user.UserName != nil {
+		userName = *user.UserName
 	}
-}
-
-func ToUserInfoFromService(info *model.UserInfo) repoModel.UserInfo {
-	return repoModel.UserInfo{
-		Name:     info.Name,
-		ChatID:   info.ChatID,
-		UserName: info.UserName,
+	name := ""
+	if user.Name != nil {
+		name = *user.Name
+	}
+	return model.UserInfo{
+		ChatID:   user.ChatID,
+		UserName: userName,
+		Name:     name,
 	}
 }
