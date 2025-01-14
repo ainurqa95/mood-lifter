@@ -112,6 +112,7 @@ func (b *Bot) handleAllUsersCommand(ctx context.Context, message *tgbotapi.Messa
 	if err != nil {
 		return err
 	}
+	fmt.Println(users)
 	usersStr := make([]string, len(users))
 	for i, user := range users {
 		usersStr[i] = "@" + user.UserName
