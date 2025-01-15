@@ -30,10 +30,10 @@ func (r *DbUserRepository) Create(ctx context.Context, userUUID string, info *mo
 	return err
 }
 
-func (r *DbUserRepository) GetByLimitOffset(ctx context.Context, limit int, offset int) ([]model.UserInfo, error) {
-	query := "SELECT id, uid, created_at, chat_id, name, username  FROM users ORDER BY id LIMIT $1 OFFSET $2"
+func (r *DbUserRepository) GetByPeriodWithLimitOffset(ctx context.Context, periodTypes []int, limit int, offset int) ([]model.UserInfo, error) {
+	query := "SELECT id, uid, created_at, chat_id, name, username, period_type FROM users WHERE period_type = ANY($1) ORDER BY id LIMIT $2 OFFSET $3"
 
-	rows, err := r.pool.Query(ctx, query, limit, offset)
+	rows, err := r.pool.Query(ctx, query, periodTypes, limit, offset)
 	if err != nil {
 		return nil, err
 	}
@@ -55,4 +55,12 @@ func (r *DbUserRepository) GetByLimitOffset(ctx context.Context, limit int, offs
 	}
 
 	return modelInfos, nil
+}
+
+func (r *DbUserRepository) UpdatePeriodType(ctx context.Context, periodType int, chatId int64) error {
+	query := "UPDATE users SET period_type = $1 WHERE chat_id = $2"
+
+	_, err := r.pool.Exec(ctx, query, periodType, chatId)
+
+	return err
 }

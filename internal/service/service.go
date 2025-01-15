@@ -7,7 +7,8 @@ import (
 
 type UserService interface {
 	CreateIfNotExists(ctx context.Context, info *model.UserInfo) (string, error)
-	GetUsersByOffset(ctx context.Context, limit int, offset int) ([]model.UserInfo, error)
+	GetUsersByPeriodWithOffset(ctx context.Context, periodTypes []int, limit int, offset int) ([]model.UserInfo, error)
+	UpdatePeriodType(ctx context.Context, periodType int, chatId int64) error
 }
 
 type ComplimentService interface {

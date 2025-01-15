@@ -7,12 +7,19 @@ import (
 	"github.com/ainurqa95/mood-lifter/internal/model"
 	"github.com/ainurqa95/mood-lifter/internal/service"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"strings"
 )
 
 const (
 	startCommand       = "start"
+	helpCommand        = "help"
 	getAllUsersCommand = "getAllUsers"
+	setEveryHour       = "setEveryHour"
+	setEveryTwoOurs    = "setEveryTwoOurs"
+	setEveryThreeHours = "setEveryThreeHours"
+	setEveryFourHours  = "setEveryFourHours"
+	setEveryFiveHours  = "setEveryFiveHours"
+	setEverySixHours   = "setEverySixHours"
+	setEveryDay        = "setEveryDay"
 )
 
 type BotClient interface {
@@ -74,7 +81,7 @@ func (b *Bot) handleUpdates(ctx context.Context, updates tgbotapi.UpdatesChannel
 			continue
 		}
 
-		err := b.handleMessage(ctx, update.Message)
+		err := b.handleStartCommand(ctx, update.Message)
 		if err != nil {
 			b.handleError(update.Message.Chat.ID, err)
 		}
@@ -85,6 +92,22 @@ func (b *Bot) handleCommand(ctx context.Context, message *tgbotapi.Message) erro
 	switch message.Command() {
 	case startCommand:
 		return b.handleStartCommand(ctx, message)
+	case helpCommand:
+		return b.handleStartCommand(ctx, message)
+	case setEveryHour:
+		return b.handleUpdatePeriod(ctx, model.EveryHour, message)
+	case setEveryTwoOurs:
+		return b.handleUpdatePeriod(ctx, model.EveryTwoHours, message)
+	case setEveryThreeHours:
+		return b.handleUpdatePeriod(ctx, model.EveryThreeHours, message)
+	case setEveryFourHours:
+		return b.handleUpdatePeriod(ctx, model.EveryFourHours, message)
+	case setEveryFiveHours:
+		return b.handleUpdatePeriod(ctx, model.EveryFiveHours, message)
+	case setEverySixHours:
+		return b.handleUpdatePeriod(ctx, model.EverySixHours, message)
+	case setEveryDay:
+		return b.handleUpdatePeriod(ctx, model.EveryDay, message)
 	case getAllUsersCommand:
 		return b.handleAllUsersCommand(ctx, message)
 	default:
@@ -97,7 +120,7 @@ func (b *Bot) handleStartCommand(ctx context.Context, message *tgbotapi.Message)
 	if err != nil {
 		return err
 	}
-	startMessage := tgbotapi.NewMessage(message.Chat.ID, config.START_MESSAGE)
+	startMessage := tgbotapi.NewMessage(message.Chat.ID, config.StartMessage)
 
 	_, err = b.client.Send(startMessage)
 	if err != nil {
@@ -106,27 +129,16 @@ func (b *Bot) handleStartCommand(ctx context.Context, message *tgbotapi.Message)
 	return b.SendCompliment(ctx, message.Chat.FirstName, message.Chat.ID)
 }
 
-// TODO временный метод выпилить
-func (b *Bot) handleAllUsersCommand(ctx context.Context, message *tgbotapi.Message) error {
-	users, err := b.userService.GetUsersByOffset(ctx, 1000, 0)
+func (b *Bot) handleUpdatePeriod(ctx context.Context, periodType int, message *tgbotapi.Message) error {
+	err := b.createUser(ctx, message)
 	if err != nil {
 		return err
 	}
-	usersStr := make([]string, len(users))
-	for i, user := range users {
-		usersStr[i] = "@" + user.UserName
+	if err = b.userService.UpdatePeriodType(ctx, periodType, message.Chat.ID); err != nil {
+		return fmt.Errorf("ошибка обновления periodType %v", err)
 	}
-	msgText := strings.Join(usersStr, ",")
-	startMessage := tgbotapi.NewMessage(message.Chat.ID, msgText)
-
-	_, err = b.client.Send(startMessage)
-
-	return err
-}
-
-func (b *Bot) handleMessage(ctx context.Context, message *tgbotapi.Message) error {
-	err := b.createUser(ctx, message)
-	if err != nil {
+	answerMessage := tgbotapi.NewMessage(message.Chat.ID, config.UpdatePeriodTypeMsg)
+	if _, err = b.client.Send(answerMessage); err != nil {
 		return err
 	}
 

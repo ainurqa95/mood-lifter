@@ -48,7 +48,7 @@ func (mr *MockUserRepositoryMockRecorder) Create(ctx, userUUID, info any) *gomoc
 // GetByLimitOffset mocks base method.
 func (m *MockUserRepository) GetByLimitOffset(ctx context.Context, limit, offset int) ([]model.UserInfo, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetByLimitOffset", ctx, limit, offset)
+	ret := m.ctrl.Call(m, "GetByPeriodWithLimitOffset", ctx, limit, offset)
 	ret0, _ := ret[0].([]model.UserInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
@@ -57,7 +57,7 @@ func (m *MockUserRepository) GetByLimitOffset(ctx context.Context, limit, offset
 // GetByLimitOffset indicates an expected call of GetByLimitOffset.
 func (mr *MockUserRepositoryMockRecorder) GetByLimitOffset(ctx, limit, offset any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByLimitOffset", reflect.TypeOf((*MockUserRepository)(nil).GetByLimitOffset), ctx, limit, offset)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByPeriodWithLimitOffset", reflect.TypeOf((*MockUserRepository)(nil).GetByLimitOffset), ctx, limit, offset)
 }
 
 // MockMessageRepository is a mock of MessageRepository interface.

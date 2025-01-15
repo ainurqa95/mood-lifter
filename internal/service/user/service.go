@@ -39,12 +39,16 @@ func (s *service) CreateIfNotExists(ctx context.Context, info *model.UserInfo) (
 	return userUUID.String(), nil
 }
 
-func (s *service) GetUsersByOffset(ctx context.Context, limit int, offset int) ([]model.UserInfo, error) {
-	users, err := s.userRepository.GetByLimitOffset(ctx, limit, offset)
+func (s *service) GetUsersByPeriodWithOffset(ctx context.Context, periodTypes []int, limit int, offset int) ([]model.UserInfo, error) {
+	users, err := s.userRepository.GetByPeriodWithLimitOffset(ctx, periodTypes, limit, offset)
 	if err != nil {
 		log.Printf("ошибка получения пользователей: %v\n", err)
 		return nil, err
 	}
 
 	return users, nil
+}
+
+func (s *service) UpdatePeriodType(ctx context.Context, periodType int, chatId int64) error {
+	return s.userRepository.UpdatePeriodType(ctx, periodType, chatId)
 }
