@@ -14,8 +14,8 @@ type Config struct {
 	BotType   BotType `env:"BOT_TYPE" envDefault:"0"`
 	TgCfg     TgConfig
 	DbConfig  DbConfig
-	EndHour   int `env:"START_HOUR" envDefault:"8"`
-	StartHour int `env:"END_HOUR" envDefault:"18"`
+	StartHour int `env:"START_HOUR" envDefault:"8"`
+	EndHour   int `env:"END_HOUR" envDefault:"18"`
 }
 
 func NewConfig() (*Config, error) {
