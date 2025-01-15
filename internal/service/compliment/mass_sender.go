@@ -26,13 +26,13 @@ func NewMassSender(
 	return MassSender{bot: bot, userService: userService}
 }
 
-func (m *MassSender) SendMassCompliments(ctx context.Context) error {
+func (m *MassSender) SendMassCompliments(ctx context.Context, periodTypes []int) error {
 	toSendUsers := make(chan model.UserInfo, 10000)
 	offset := 0
 	eg, gCtx := errgroup.WithContext(ctx)
 	eg.Go(func() error {
 		for {
-			users, err := m.userService.GetUsersByOffset(ctx, DEFAULT_LIMIT, offset)
+			users, err := m.userService.GetUsersByPeriodWithOffset(ctx, periodTypes, DEFAULT_LIMIT, offset)
 			if err != nil {
 				return err
 			}

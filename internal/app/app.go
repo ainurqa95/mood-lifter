@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/ainurqa95/mood-lifter/internal/bots"
 	"github.com/ainurqa95/mood-lifter/internal/config"
+	"github.com/ainurqa95/mood-lifter/internal/service/clock"
 	"github.com/ainurqa95/mood-lifter/internal/service/compliment"
 	"github.com/ainurqa95/mood-lifter/internal/service/scheduler"
 	_ "github.com/jackc/pgx/v5"
@@ -113,7 +114,8 @@ func (a *App) initMassSender(ctx context.Context, cfg config.Config) error {
 }
 
 func (a *App) initScheduler(ctx context.Context, cfg config.Config) error {
-	cron, err := scheduler.NewComplimentScheduler(cfg, a.massSender)
+	periodDefiner := scheduler.NewSchedulerPeriodDefiner(cfg, clock.NewRealClock())
+	cron, err := scheduler.NewComplimentScheduler(cfg, a.massSender, periodDefiner)
 	if err != nil {
 		return err
 	}

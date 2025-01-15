@@ -8,34 +8,39 @@ import (
 	"log"
 )
 
+const everyCronOur = "0 * * * *"
+
 type ComplimentScheduler struct {
-	scheduler  gocron.Scheduler
-	massSender compliment.MassSender
-	cfg        config.Config
+	scheduler         gocron.Scheduler
+	massSender        compliment.MassSender
+	periodTypeDefiner PeriodTypeDefiner
+	cfg               config.Config
 }
 
-func NewComplimentScheduler(cfg config.Config, massSender compliment.MassSender) (*ComplimentScheduler, error) {
+func NewComplimentScheduler(cfg config.Config, massSender compliment.MassSender, periodTypeDefiner PeriodTypeDefiner) (*ComplimentScheduler, error) {
 	scheduler, err := gocron.NewScheduler()
 	if err != nil {
 		return nil, err
 	}
 
 	return &ComplimentScheduler{
-		massSender: massSender,
-		scheduler:  scheduler,
-		cfg:        cfg,
+		massSender:        massSender,
+		scheduler:         scheduler,
+		periodTypeDefiner: periodTypeDefiner,
+		cfg:               cfg,
 	}, nil
 }
 
 func (c *ComplimentScheduler) StartScheduler(ctx context.Context) error {
 	_, err := c.scheduler.NewJob(
 		gocron.CronJob(
-			c.cfg.CronSchedule,
+			everyCronOur,
 			false,
 		),
 		gocron.NewTask(
 			func(ctx context.Context) {
-				err := c.massSender.SendMassCompliments(ctx)
+				periodTypes := c.periodTypeDefiner.DefinePeriods()
+				err := c.massSender.SendMassCompliments(ctx, periodTypes)
 				if err != nil {
 					log.Printf("error sending mass compliments: %v", err)
 				}
