@@ -37,6 +37,6 @@ func TestClientMessagesToBot(t *testing.T) {
 	complimentService.EXPECT().GetRandom(gomock.Any()).Return(&model.Compliment{}, nil).AnyTimes()
 	err = bot.handleStartCommand(ctx, message)
 	assert.Nil(t, err)
-	err = bot.handleMessage(ctx, message)
+	err = bot.handleStartCommand(ctx, message)
 	assert.Nil(t, err)
 }

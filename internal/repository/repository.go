@@ -1,5 +1,7 @@
 package repository
 
+//go:generate mockgen -destination ./mock/repository.go -package mock . UserRepository,MessageRepository,ComplimentRepository
+
 import (
 	"context"
 	"github.com/ainurqa95/mood-lifter/internal/model"

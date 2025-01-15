@@ -1,5 +1,7 @@
 package service
 
+//go:generate mockgen -destination ./mock/service.go -package mock . UserService,ComplimentService,MessageService
+
 import (
 	"context"
 	"github.com/ainurqa95/mood-lifter/internal/model"
